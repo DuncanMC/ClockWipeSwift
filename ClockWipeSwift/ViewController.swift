@@ -19,12 +19,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var animateButton: UIButton!
 
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var rotateCCWSwitch: UISwitch!
+    @IBOutlet weak var revealAnimationSwitch: UISwitch!
 
 
     //Set to true to start with the image hidden, and reveal it during the animation.
     //Set to false to begin with the image visble, and animate hiding it
     var reveal = false
     var useCGPaths = true
+
+    var animateCounterclockwise = false
 
     let animationCompletionKey = "animationCompletion"
     lazy var shapeLayer = CAShapeLayer()
@@ -39,11 +43,14 @@ class ViewController: UIViewController {
         imageView.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
     }
 
+    @IBAction func handleRotateCCWSwitch(_ sender: Any) {
+        animateCounterclockwise = rotateCCWSwitch.isOn
+    }
 
+    @IBAction func handleRevealAnimationSwitch(_ sender: Any) {
+        reveal = revealAnimationSwitch.isOn
+    }
     @IBAction func handleAnimateButton(_ sender: Any) {
-
-
-
         //MARK: - Set up the shape layer as a mask layer
         shapeLayer.path = nil
         animateButton.isEnabled = false  //Disable the animate button while the animation is running
@@ -63,9 +70,9 @@ class ViewController: UIViewController {
 
 
         //MARK: - Add a full-circle arc that starts at the top center of the rect ("north") to the mask CAShapeLayer's path
-
-        let startAngle = reveal ? -0.5 * CGFloat.pi : 1.5 * CGFloat.pi
-        let endAngle = reveal ? 1.5 * CGFloat.pi : -0.5 * CGFloat.pi
+        let direction = animateCounterclockwise ? reveal : !reveal
+        let startAngle = direction ? 1.5 * CGFloat.pi : -0.5 * CGFloat.pi
+        let endAngle = direction ? -0.5 * CGFloat.pi : 1.5 * CGFloat.pi
         if useCGPaths {
             //Create an empty CGPath
             let path = CGMutablePath()
@@ -75,9 +82,9 @@ class ViewController: UIViewController {
                         radius: radius/2,
                         startAngle: startAngle ,
                         endAngle: endAngle,
-                        clockwise: !reveal)
+                        clockwise: direction)
             shapeLayer.path = path
-            imageView.layer.mask = shapeLayer    //Install the shape view as the mask layer for the image view.
+
         } else {
             let path = UIBezierPath(arcCenter: centerPoint,
                                     radius: radius/2,
@@ -86,15 +93,22 @@ class ViewController: UIViewController {
                                     clockwise: reveal)
             path.lineWidth = radius
             shapeLayer.path = path.cgPath
-            imageView.layer.mask = shapeLayer    //Install the shape view as the mask layer for the image view.
-//            imageView.layer.addSublayer(shapeLayer)    //Install the shape view as the mask layer for the image view.
         }
+
+
+
+        //Disable implicit animations before changing strokeEnd to avoid animating the change.
+        CATransaction.begin()
+        CATransaction.setValue(true, forKey: kCATransactionDisableActions)
         //For a reveal animation, start the animation with the path empty. (mask blank, which fully hides the image underneath.)
         if reveal {
             shapeLayer.strokeEnd = 0;
         } else {
             shapeLayer.strokeEnd = 1.0;
         }
+        CATransaction.commit()
+        imageView.layer.mask = shapeLayer    //Install the shape view as the mask layer for the image view.
+
 
 
 
@@ -121,8 +135,10 @@ class ViewController: UIViewController {
             guard finished else { return }
             //Remove the shape layer once the animation is complete
             //(if the view gets resized the mask layer's shape won't fit the new view size.
+            self.shapeLayer.path = nil
             self.imageView.layer.mask = nil
-            self.shapeLayer.removeFromSuperlayer()  //This is only needed if you add the shape layer as a sublayer rather than a mask layer
+
+            //self.shapeLayer.removeFromSuperlayer()  //This is only needed if you add the shape layer as a sublayer rather than a mask layer
             self.animateButton.isEnabled = true //re-enable the animate button
             print("Animation complete!")
         }
