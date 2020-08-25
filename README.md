@@ -6,7 +6,7 @@ It creates and installs a CAShapeLayer as a mask on an image view's content laye
 
 The demo app has switches that let you control whether the animation hides or reveals the underlying image, and whether the transition proceeds clockwise or counter-clockwise.
 
-![screenshot](ClockWipe screenshot.png)
+![screenshot](ClockWipe_screenshot.png)
 
 The animation looks like this when set to a clockwise hide animation:
 
