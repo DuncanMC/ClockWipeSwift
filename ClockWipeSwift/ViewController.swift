@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     //Set to true to start with the image hidden, and reveal it during the animation.
     //Set to false to begin with the image visble, and animate hiding it
     var reveal = false
-    static var animateCounterclockwise = true
+    var useCGPaths = true
 
     let animationCompletionKey = "animationCompletion"
     lazy var shapeLayer = CAShapeLayer()
@@ -66,7 +66,7 @@ class ViewController: UIViewController {
 
         let startAngle = reveal ? -0.5 * CGFloat.pi : 1.5 * CGFloat.pi
         let endAngle = reveal ? 1.5 * CGFloat.pi : -0.5 * CGFloat.pi
-        if false {
+        if useCGPaths {
             //Create an empty CGPath
             let path = CGMutablePath()
 
