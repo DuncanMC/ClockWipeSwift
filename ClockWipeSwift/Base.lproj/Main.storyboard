@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ClockWipeSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wareto_blue" translatesAutoresizingMaskIntoConstraints="NO" id="coQ-Rl-8AI">
+                                <rect key="frame" x="20.666666666666657" y="224.66666666666666" width="372.66666666666674" height="286.66666666666674"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="coQ-Rl-8AI" secondAttribute="height" multiplier="13:10" id="qeY-eO-aA0"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAJ-4M-ymh">
+                                <rect key="frame" x="179.66666666666666" y="676" width="57" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Roc-cl-O3c"/>
+                                </constraints>
+                                <state key="normal" title="Animate"/>
+                                <connections>
+                                    <action selector="handleAnimateButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mv1-Zs-cIn"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Clock Wipe Animation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ald-Ju-who">
+                                <rect key="frame" x="123" y="20" width="168" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="coQ-Rl-8AI" firstAttribute="width" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="2m6-a2-3d7"/>
+                            <constraint firstItem="nAJ-4M-ymh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6jO-PY-X2l"/>
+                            <constraint firstItem="nAJ-4M-ymh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="coQ-Rl-8AI" secondAttribute="bottom" constant="20" id="Oap-7H-41A"/>
+                            <constraint firstItem="coQ-Rl-8AI" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Ald-Ju-who" secondAttribute="bottom" constant="20" id="QoB-7C-7yd"/>
+                            <constraint firstItem="coQ-Rl-8AI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="W6R-Yi-Y23"/>
+                            <constraint firstItem="coQ-Rl-8AI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jjz-la-zHi"/>
+                            <constraint firstItem="Ald-Ju-who" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lfD-an-Rpw"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="nAJ-4M-ymh" secondAttribute="bottom" constant="20" id="oZA-WQ-xxK"/>
+                            <constraint firstItem="Ald-Ju-who" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="wLs-Bq-Aaj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="animateButton" destination="nAJ-4M-ymh" id="hU3-sa-BMA"/>
+                        <outlet property="imageView" destination="coQ-Rl-8AI" id="DCh-BW-7NC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="133" y="139"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="wareto_blue" width="374" height="287"/>
+    </resources>
+</document>
