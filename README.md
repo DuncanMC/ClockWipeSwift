@@ -10,4 +10,4 @@ The demo app has switches that let you control whether the animation hides or re
 
 The animation looks like this when set to a clockwise hide animation:
 
-![clock wipe](Clock wipe.gif)
+![clock wipe](ClockWipe.gif)
