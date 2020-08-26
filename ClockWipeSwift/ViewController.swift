@@ -3,8 +3,15 @@
 //  ClockWipeSwift
 //
 //  Created by Duncan Champney on 8/24/20.
-//  Copyright © 2020 Duncan Champney. All rights reserved.
-//
+/*
+Copyright <2020> <Duncan Champney>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 
 import UIKit
 import CoreGraphics
@@ -18,6 +25,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var animateButton: UIButton!
 
+    @IBOutlet weak var pauseResumeButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var rotateCCWSwitch: UISwitch!
     @IBOutlet weak var revealAnimationSwitch: UISwitch!
@@ -38,9 +46,18 @@ class ViewController: UIViewController {
         shapeLayer.frame = imageView.bounds
     }
 
+    var animationPaused: Bool = false {
+        didSet {
+            configurePauseResumeButton()
+            imageView.layer.pauseAnimation(animationPaused)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
+        animationPaused = false
+        pauseResumeButton.isEnabled = false
     }
 
     @IBAction func handleRotateCCWSwitch(_ sender: Any) {
@@ -54,6 +71,7 @@ class ViewController: UIViewController {
         //MARK: - Set up the shape layer as a mask layer
         shapeLayer.path = nil
         animateButton.isEnabled = false  //Disable the animate button while the animation is running
+        pauseResumeButton.isEnabled = true
 
         let maskHeight = imageView.bounds.height
         let maskWidth = imageView.bounds.width
@@ -102,15 +120,12 @@ class ViewController: UIViewController {
         CATransaction.setValue(true, forKey: kCATransactionDisableActions)
         //For a reveal animation, start the animation with the path empty. (mask blank, which fully hides the image underneath.)
         if reveal {
-            shapeLayer.strokeEnd = 0;
+            shapeLayer.strokeEnd = 0
         } else {
-            shapeLayer.strokeEnd = 1.0;
+            shapeLayer.strokeEnd = 1.0
         }
         CATransaction.commit()
         imageView.layer.mask = shapeLayer    //Install the shape view as the mask layer for the image view.
-
-
-
 
         //MARK: - Create the animation
         let clockWipe = CABasicAnimation(keyPath: "strokeEnd")  //Create an animation of the shape layer's strokeEnd property
@@ -120,10 +135,10 @@ class ViewController: UIViewController {
 
         if reveal {
             //For a reveal animation, animate the stroke end from 1 to zero
-            clockWipe.toValue = 1;
+            clockWipe.toValue = 1
         } else {
             //Else this is a
-            clockWipe.toValue = 0  ;
+            clockWipe.toValue = 0
         }
 
 
@@ -140,6 +155,7 @@ class ViewController: UIViewController {
 
             //self.shapeLayer.removeFromSuperlayer()  //This is only needed if you add the shape layer as a sublayer rather than a mask layer
             self.animateButton.isEnabled = true //re-enable the animate button
+            self.pauseResumeButton.isEnabled = false
             print("Animation complete!")
         }
 
@@ -151,6 +167,16 @@ class ViewController: UIViewController {
 
         //Finally, add the animation to the shape layer
         shapeLayer.add(clockWipe, forKey: "clockWipe")
+    }
+    @IBAction func handlePauseResumeButton(_ sender: Any) {
+        animationPaused = !animationPaused
+    }
+
+    func configurePauseResumeButton() {
+        let pauseString = NSLocalizedString("Pause", comment: "Pause button title")
+        let resumeString = NSLocalizedString("Resume", comment: "Pause button title")
+        let buttonTitle = animationPaused ? resumeString : pauseString
+        pauseResumeButton.setTitle(buttonTitle, for: .normal)
     }
 }
 
